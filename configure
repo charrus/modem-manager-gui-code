@@ -1,0 +1,171 @@
+#!/bin/sh
+
+#      configure
+#      
+#      Copyright 2012-2018 Alex <alex@linuxonly.ru>
+#                     2013 Graham Inggs <graham@nerve.org.za>
+#      
+#      This program is free software: you can redistribute it and/or modify
+#      it under the terms of the GNU General Public License as published by
+#      the Free Software Foundation; either version 3 of the License, or
+#      (at your option) any later version.
+#      
+#      This program is distributed in the hope that it will be useful,
+#      but WITHOUT ANY WARRANTY; without even the implied warranty of
+#      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#      GNU General Public License for more details.
+#      
+#      You should have received a copy of the GNU General Public License
+#      along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+
+prefix="/usr"
+libpath="/usr/lib"
+addlibsnames=""
+prefixchanged=false
+libpathchanged=false
+ofonoplugin=true
+spellchecker=1
+indicator=1
+
+cflags=$CFLAGS
+if [ "x$cflags" = x ] ; then
+    cflags='-mtune=native -O3'
+fi
+
+for arg_iter in "$@"; do
+    arg=${arg_iter%%=*}
+    arg_value=${arg_iter#*=}
+    case $arg in
+        --help)
+echo "This script generates Modem Manager GUI configuration and build files. It also
+checks if all dependencies are fulfilled.
+Used without arguments, default settings are applied. Arguments are :
+    --help : Display this message and exit.
+    --prefix=PATH : Set PATH as file-system root for installation.
+    --libdir=PATH : Set PATH as a directory for libraries.
+    --cflags=PARAMETERS : Pass PARAMETERS to the compiler."
+            exit 0;;
+
+        --prefix)
+            prefixchanged=true
+            prefix=$(eval echo $arg_value);;
+
+        --libdir)
+            libpathchanged=true
+            libpath=$(eval echo $arg_value);;
+
+        --cflags)
+            echo "Using : \"$arg_value\" as compilation options."
+            cflags="$arg_value ";;
+
+        
+    esac
+done
+
+if $prefixchanged ; then
+    if ! $libpathchanged ; then 
+            libpath="$prefix/lib"
+    fi
+fi
+
+echo -n "Checking dependencies... "
+
+if ! pkg-config --exists 'gtk+-3.0 >= 3.4.0'; then
+	echo "ERROR: Please install GTK+ version 3.4.0 or later with development headers."
+	exit 1
+fi
+
+if ! test -e "/usr/include/gdbm/gdbm.h"; then
+	if ! test -e "/usr/include/gdbm.h"; then
+		echo "ERROR: Please install GDBM library with development headers."
+		exit 1
+	fi
+fi
+
+if ! pkg-config --exists 'ofono >= 1.9'; then
+	echo "WARNING: oFono plugin won't be built. Please install oFono development package for version 1.9 or later if you want better oFono experience."
+	ofonoplugin=false
+fi
+
+if ! pkg-config --exists 'gtkspell3-3.0 >= 3.0.3'; then
+	echo "WARNING: Spell checking won't be supported. Please install gtkspell library version 3.0.3 or later with development headers if you want to use it."
+	spellchecker=0
+else
+	if [ -z "$addlibsnames" ]; then
+ 		addlibsnames="gtkspell3-3.0"
+	else
+		addlibsnames="${addlibsnames} gtkspell3-3.0"
+	fi	
+fi
+
+if ! pkg-config --exists 'ayatana-appindicator3-0.1 >= 0.4.92'; then
+	echo "WARNING: Indicator won't be supported. Please install ayatana-appindicator library version 0.4.92 or later with development headers if you want to use it."
+	indicator=0
+else
+	if [ -z "$addlibsnames" ]; then
+ 		addlibsnames="ayatana-appindicator3-0.1"
+	else
+		addlibsnames="${addlibsnames} ayatana-appindicator3-0.1"
+	fi	
+fi
+
+echo done
+
+
+echo -n "Generating Makefile_h... "
+echo "#WARNING: Auto-generated file, edit with care.
+CFLAGS := $cflags
+LIBPATH := $libpath
+PREFIX := $prefix
+ADDLIBSNAMES := $addlibsnames
+OFONOPLUGIN := $ofonoplugin" > Makefile_h
+echo done
+
+echo -n "Generating resources.h... "
+echo "/*
+ *      resources.h
+ *      
+ *      Copyright 2012-2018 Alex <alex@linuxonly.ru>
+ *      
+ *      This program is free software: you can redistribute it and/or modify
+ *      it under the terms of the GNU General Public License as published by
+ *      the Free Software Foundation; either version 3 of the License, or
+ *      (at your option) any later version.
+ *      
+ *      This program is distributed in the hope that it will be useful,
+ *      but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *      GNU General Public License for more details.
+ *      
+ *      You should have received a copy of the GNU General Public License
+ *      along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/* WARNING: Auto-generated file, edit with care. */
+
+#ifndef __RESOURCES_H__
+#define __RESOURCES_H__
+
+#define RESOURCE_SCALABLE_ICONS_DIR      \"$prefix/share/icons/hicolor/scalable/apps\"
+#define RESOURCE_SYMBOLIC_ICONS_DIR      \"$prefix/share/icons/hicolor/symbolic/apps\"
+#define RESOURCE_PNG_ICONS_DIR           \"$prefix/share/icons/hicolor/128x128/apps\"
+#define RESOURCE_PIXMAPS_DIR             \"$prefix/share/modem-manager-gui/pixmaps\"
+#define RESOURCE_SOUNDS_DIR              \"$prefix/share/modem-manager-gui/sounds\"
+#define RESOURCE_UI_DIR                  \"$prefix/share/modem-manager-gui/ui\"
+#define RESOURCE_MODULES_DIR             \"$libpath/modem-manager-gui/modules\"
+
+#define RESOURCE_LOCALE_DIR              \"$prefix/share/locale\"
+#define RESOURCE_LOCALE_DOMAIN           \"modem-manager-gui\"
+
+#define RESOURCE_DESKTOP_FILE            \"$prefix/share/applications/modem-manager-gui.desktop\"
+
+#define RESOURCE_PROVIDERS_DB            \"$prefix/share/mobile-broadband-provider-info/serviceproviders.xml\"
+
+#define RESOURCE_SPELLCHECKER_ENABLED    $spellchecker
+
+#define RESOURCE_INDICATOR_ENABLED       $indicator
+
+#endif // __RESOURCES_H__" > resources.h
+echo done
+

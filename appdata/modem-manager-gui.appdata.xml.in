@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2014-2018 Alex <alex@linuxonly.ru> -->
+<component type="desktop-application">
+ <id>modem-manager-gui.desktop</id>
+ <metadata_license>CC0-1.0</metadata_license>
+ <project_license>GPL-3.0+ and CC0-1.0</project_license>
+ <name>Modem Manager GUI</name>
+ <developer_name>Alex</developer_name>
+ <update_contact>alex@linuxonly.ru</update_contact>
+ <translation type="gettext">modem-manager-gui</translation>
+ <summary>Control EDGE/3G/4G broadband modem specific functions</summary>
+ <description>
+  <p>
+   Simple graphical interface compatible with Modem manager, Wader and oFono
+   system services able to control EDGE/3G/4G broadband modem specific functions.
+  </p>
+  <p>
+   You can check balance of your SIM card, send or receive SMS messages, control
+   mobile traffic consuption and more using Modem Manager GUI. 
+  </p>
+  <p>Current features:</p>
+  <ul>
+   <li>Create and control mobile broadband connections</li>
+   <li>Send and receive SMS messages and store messages in database</li>
+   <li>Initiate USSD requests and read answers (also using interactive sessions)</li>
+   <li>View device information: operator name, device mode, IMEI, IMSI, signal level</li>
+   <li>Scan available mobile networks</li>
+   <li>View mobile traffic statistics and set limits</li>
+  </ul>
+  <p>
+   Please note that some features may be not available due to limitations of different
+   system services or even different versions of system service in use.
+  </p>
+ </description>
+ <provides>
+  <binary>modem-manager-gui</binary>
+ </provides>
+ <launchable type="desktop-id">modem-manager-gui.desktop</launchable>
+ <screenshots>
+  <screenshot type="default">
+   <caption>Broadband devices overview</caption>
+   <image type="source" width="1024" height="576">http://download.tuxfamily.org/gsf/appdata/mmgui-devices.png</image>
+  </screenshot>
+  <screenshot>
+   <caption>SMS messages list</caption>
+   <image type="source" width="1024" height="576">http://download.tuxfamily.org/gsf/appdata/mmgui-sms.png</image>
+  </screenshot>
+  <screenshot>
+   <caption>Traffic control</caption>
+   <image type="source" width="1024" height="576">http://download.tuxfamily.org/gsf/appdata/mmgui-traffic.png</image>
+  </screenshot>
+ </screenshots>
+ <url type="homepage">http://linuxonly.ru/page/modem-manager-gui</url>
+ <url type="bugtracker">https://linuxonly.ru/forum/modem-manager-gui</url>
+ <url type="translate">https://www.transifex.com/projects/p/modem-manager-gui</url>
+ <url type="donation">https://linuxonly.ru/page/donate</url>
+ <categories>
+  <category>GTK</category>
+  <category>System</category>
+  <category>Utility</category>
+  <category>Network</category>
+  <category>TelephonyTools</category>
+​ </categories>
+ <kudos>
+  <kudo>AppMenu</kudo>
+  <kudo>Notifications</kudo>
+  <kudo>ModernToolkit</kudo>
+  <kudo>UserDocs</kudo>
+ </kudos>
+</component>
+

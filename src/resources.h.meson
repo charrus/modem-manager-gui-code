@@ -1,0 +1,39 @@
+/*
+ *      resources.h
+ *      
+ *      Copyright 2018 Alex <alex@linuxonly.ru>
+ *      
+ *      This program is free software: you can redistribute it and/or modify
+ *      it under the terms of the GNU General Public License as published by
+ *      the Free Software Foundation; either version 3 of the License, or
+ *      (at your option) any later version.
+ *      
+ *      This program is distributed in the hope that it will be useful,
+ *      but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *      GNU General Public License for more details.
+ *      
+ *      You should have received a copy of the GNU General Public License
+ *      along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef __RESOURCES_H__
+#define __RESOURCES_H__
+
+#mesondefine RESOURCE_NAME
+#mesondefine RESOURCE_VERSION
+#mesondefine RESOURCE_SCALABLE_ICONS_DIR
+#mesondefine RESOURCE_SYMBOLIC_ICONS_DIR
+#mesondefine RESOURCE_PNG_ICONS_DIR
+#mesondefine RESOURCE_PIXMAPS_DIR
+#mesondefine RESOURCE_SOUNDS_DIR
+#mesondefine RESOURCE_UI_DIR
+#mesondefine RESOURCE_MODULES_DIR
+#mesondefine RESOURCE_LOCALE_DIR
+#mesondefine RESOURCE_LOCALE_DOMAIN
+#mesondefine RESOURCE_DESKTOP_FILE
+#mesondefine RESOURCE_PROVIDERS_DB
+#mesondefine RESOURCE_SPELLCHECKER_ENABLED
+#mesondefine RESOURCE_INDICATOR_ENABLED
+
+#endif // __RESOURCES_H__

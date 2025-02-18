@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Modem Manager GUI
+GenericName=Broadband modem management tool
+Comment=Control EDGE/3G/4G broadband modem specific functions
+Exec=modem-manager-gui
+Icon=modem-manager-gui
+Terminal=false
+Type=Application
+StartupNotify=true
+Categories=GTK;System;Utility;Network;TelephonyTools;
+Keywords=modem;manager;sms;ussd;
+X-GNOME-UsesNotifications=true
